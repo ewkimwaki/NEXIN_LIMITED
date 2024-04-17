@@ -18,5 +18,9 @@ db.init_app(app)
 def index():
     return '<h3>Nexin LTD</h3>'
 
+@app.route('/clients')
+def client():
+    pass
+
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
