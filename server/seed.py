@@ -10,8 +10,8 @@ with app.app_context():
     db.create_all()
 
     # Create clients
-    client1 = Client(username='Mary Watiri', email='mary@example.com')
-    client2 = Client(username='Samuel Omoding', email='sam@example.com')
+    client1 = Client(name='Mary Watiri', email='mary@example.com', phone_number='1234567890')
+    client2 = Client(name='Samuel Omoding', email='sam@example.com', phone_number='0987654321')
 
     # Create tasks
     task1 = Task(title='Task 1', description='Description for Task 1')
