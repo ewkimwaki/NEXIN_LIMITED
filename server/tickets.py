@@ -1,9 +1,42 @@
 from databaseconfig import db
+from datetime import datetime
+from enum import Enum
+from databaseconfig import db
 
+
+class TicketStatus(Enum):
+    OPEN = "open"
+    CLOSED = "closed"
+    IN_PROGRESS = "in_progress"
+
+class PriorityLevel(Enum):
+    URGENT = "urgent"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
 
 class Tickets(db.Model):
-    __tablename__ = 'tickets'
-    
+    _tablename_ = 'tickets'
+
     id = db.Column(db.Integer, primary_key=True)
-    ticket = db.Column(db.String(120), nullable=False)
-    description = db.Column(db.Text)
+    status = db.Column(db.Enum(TicketStatus), default=TicketStatus.OPEN)
+    priority = db.Column(db.Enum(PriorityLevel), default=PriorityLevel.LOW)
+    deadline = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    assign_to = db.Column(db.Integer, db.ForeignKey('admin.id'))
+    client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    tasks = db.relationship('Task', back_populates='ticket')
+    client = db.relationship("Client", back_populates="tickets")
+    @property
+    def days_remaining(self):
+        return (self.deadline - datetime.utcnow()).days
+
+    @property
+    def is_urgent(self):
+        return self.days_remaining < 3
+
+# class Tasks(db.Model):
+#     _tablename_ = 'tasks'
+
+#     id = db.Column(db.Integer, primary_key=True)
+#     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
+#     ticket = db.relationship('Ticket', back_populates='tasks')
