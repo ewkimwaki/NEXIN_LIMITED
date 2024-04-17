@@ -26,6 +26,7 @@ class Tickets(db.Model):
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
     tasks = db.relationship('Task', back_populates='ticket')
     client = db.relationship("Client", back_populates="tickets")
+    # tickets = db.relationship("Tickets", back_populates="admin")
     @property
     def days_remaining(self):
         return (self.deadline - datetime.utcnow()).days
@@ -33,10 +34,3 @@ class Tickets(db.Model):
     @property
     def is_urgent(self):
         return self.days_remaining < 3
-
-# class Tasks(db.Model):
-#     _tablename_ = 'tasks'
-
-#     id = db.Column(db.Integer, primary_key=True)
-#     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))
-#     ticket = db.relationship('Ticket', back_populates='tasks')

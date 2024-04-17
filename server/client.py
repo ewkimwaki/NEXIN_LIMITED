@@ -9,6 +9,8 @@ class Client(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     phone_number = db.Column(db.String, unique=True, nullable=False)
     
+    tickets = db.relationship('Tickets', back_populates='client')
+    
     @validates('email')
     def validate_email(self, key, email):
         assert '@' in email, 'Invalid email address'
