@@ -1,5 +1,5 @@
 from databaseconfig import db
 
 
-class Admin(db.Model):
+class Tickets(db.Model):
     pass
