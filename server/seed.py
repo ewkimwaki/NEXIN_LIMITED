@@ -12,7 +12,9 @@ with app.app_context():
     # Create clients
     client1 = Client(name='Mary Watiri', email='mary@example.com', phone_number='1234567890')
     client2 = Client(name='Samuel Omoding', email='sam@example.com', phone_number='0987654321')
-
+    client1 = Client(name='Emmanuel Kimwaki', email='emman@example.com', phone_number='1235567890')
+    client2 = Client(name='Sang Wicklife', email='sang@example.com', phone_number='0987653321')
+    
     # Create tasks
     task1 = Task(title='Task 1', description='Description for Task 1')
     task2 = Task(title='Task 2', description='Description for Task 2')

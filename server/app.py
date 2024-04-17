@@ -4,6 +4,7 @@ from flask_migrate import Migrate
 from sqlalchemy import MetaData
 from databaseconfig import db
 from models import Client
+from endpoints.client_api import clients
 
 
 app = Flask(__name__)
@@ -19,18 +20,9 @@ db.init_app(app)
 def index():
     return '<h3>Nexin LTD</h3>'
 
-@app.route('/clients')
-def clients():
-    clients = Client.querry.all()
-    client_list = []
-    for client in clients:
-        client_list.append({
-            'id': client.id,
-            'name': client.name,
-            'email': client.email,
-            'phone_number': client.phone_number
-        })
-    return jsonify(client_list)
+
+app.add_url_rule('/clients', 'clients', clients, methods=['GET', 'POST'])
+
 
 if __name__ == '__main__':
     app.run(port=5555, debug=True)
