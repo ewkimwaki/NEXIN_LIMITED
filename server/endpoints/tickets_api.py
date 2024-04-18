@@ -9,11 +9,11 @@ def tickets():
         for ticket in tickets:
             ticket_list.append({
                 'id' : ticket.id,
-                'status' : ticket.status,
-                'priority' : ticket.priority,
+                'status' : ticket.status.value,  # Convert Enum to its value
+                'priority' : ticket.priority.value,  # Convert Enum to its value
                 'deadline' : ticket.deadline,
                 'assign_to' : ticket.assign_to,
-                'client_id' : ticket.id
+                'client_id' : ticket.client_id
             })
         return jsonify(ticket_list)
     elif request.method == 'POST':
@@ -23,16 +23,17 @@ def tickets():
         deadline = data.get('deadline')
         assign_to = data.get('assign_to')
         client_id = data.get('client_id')
-        ticket = Tickets(status = status, priority = priority, deadline = deadline, assign_to = assign_to, client_id = client_id)
+        ticket = Tickets(status=status, priority=priority, deadline=deadline, assign_to=assign_to, client_id=client_id)
         db.session.add(ticket)
         db.session.commit()
         inserted_ticket = {
-            'status' : ticket.status,
-            'priority' : ticket.priority,
-            'deadline' : ticket.deadline,
-            'assign_to' : ticket.assign_to,
-            'client_id' : ticket.id
-            }
+            'id': ticket.id,  
+            'status': ticket.status.value,  
+            'priority': ticket.priority.value, 
+            'deadline': ticket.deadline,
+            'assign_to': ticket.assign_to,
+            'client_id': ticket.client_id
+        }
         return jsonify(inserted_ticket)
     elif request.method == 'DELETE':
         ticket_id = request.args.get('id')
@@ -40,6 +41,6 @@ def tickets():
         if ticket:
             db.session.delete(ticket)
             db.session.commit()
-            return f"Ticket with ID {client_id} deleted"
+            return f"Ticket with ID {ticket_id} deleted"
         else:
-            return f"Ticket with ID {client_id} not found", 404
+            return f"Ticket with ID {ticket_id} not found", 404
