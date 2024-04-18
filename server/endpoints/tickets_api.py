@@ -13,7 +13,8 @@ def tickets():
                 'priority' : ticket.priority.value,  # Convert Enum to its value
                 'deadline' : ticket.deadline,
                 'assign_to' : ticket.assign_to,
-                'client_id' : ticket.client_id
+                'client_id' : ticket.client_id,
+                'comments' : ticket.comments
             })
         return jsonify(ticket_list)
     elif request.method == 'POST':
@@ -32,7 +33,8 @@ def tickets():
             'priority': ticket.priority.value, 
             'deadline': ticket.deadline,
             'assign_to': ticket.assign_to,
-            'client_id': ticket.client_id
+            'client_id': ticket.client_id,
+            'comments': ticket.comments
         }
         return jsonify(inserted_ticket)
     elif request.method == 'DELETE':
@@ -44,3 +46,15 @@ def tickets():
             return f"Ticket with ID {ticket_id} deleted"
         else:
             return f"Ticket with ID {ticket_id} not found", 404
+    
+    elif request.method == 'PATCH':
+        ticket_id = request.args.get('id')
+        ticket = Tickets.query.get(ticket_id)
+        if not ticket:
+            return jsonify({'message': 'Ticket not found'}), 404
+        data = request.get_json()
+        for key, value in data.items():
+            setattr(ticket, key, value)
+        db.session.commit()
+        return jsonify(ticket._dict_), 200
+    

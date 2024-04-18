@@ -1,4 +1,3 @@
-
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar"
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from "react"
@@ -6,11 +5,9 @@ import { Box, IconButton} from "@mui/material";
 import {Link} from "react-router-dom"
 import CottageIcon from '@mui/icons-material/Cottage';
 import GroupIcon from '@mui/icons-material/Group';
-import ContactPageIcon from '@mui/icons-material/ContactPage';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
-import QuizOutlinedIcon from '@mui/icons-material/QuizOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import ContactPage from "@mui/icons-material/ContactPage";
 
@@ -21,7 +18,7 @@ const Item=({title,to,icon})=>{ //create a function for holding the sidevar deta
     style={{color:"rgb(200,200,200)"}}
     icon={icon}
     >
-      <h4 className="bg-transparent text-sm" color="rgb(255,240,200)">{title}</h4> 
+      <h4 className="bg-amber-950 text-sm" color="rgb(255,240,200)">{title}</h4> 
       
     </MenuItem>
     </Link>
@@ -33,22 +30,22 @@ function SideBar({ThemeStyles}) {
     
     const [isCollapsed, setCollapsed]=useState(false)
   return (
-    <div className="flex-col w-fit h-screen border-x-4 border-neutral-700 bg-sky-950 border-solid ">
-    <Box class="flex-col" style={ThemeStyles}>
+    <div className="flex-col w-fit h-screen border-x-4 border-neutral-700 bg-amber-950 border-solid ">
+    <Box className="flex-col" style={ThemeStyles}>
    
 <Sidebar collapsed={isCollapsed} style={ThemeStyles}>
-<Menu  class="bg-sky-950">
+<Menu  className="bg-amber-950">
 <Box>
 <MenuItem
-        class="text-slate-200 justify-between"
+        className="text-slate-200 justify-between"
         onClick={()=>setCollapsed(!isCollapsed)}   //set the collapse functionality when the menu ico is clicked
         icon={isCollapsed?<MenuIcon/>:undefined } //when collapsed the menu ico is visible
        style={{margin:"10px 0", cursor:"pointer"}}>
 
         {!isCollapsed&&( //when in a state of collapsed
-             <Box class='flex justify-between p-3'>
+             <Box className='flex justify-between p-3'>
          <h1 className="text-2xl font-bold">ADMIN</h1>
-            <IconButton class="text-slate-200" onClick={()=>setCollapsed(!isCollapsed)}>
+            <IconButton className="text-slate-200" onClick={()=>setCollapsed(!isCollapsed)}>
                 <MenuIcon/>
             </IconButton>
             </Box>
@@ -60,10 +57,10 @@ function SideBar({ThemeStyles}) {
     </Box>
     {!isCollapsed &&(
         <Box>
-         <Box class="mt-5">
-    <img id="admin" className="mx-auto" src="https://avatars.githubusercontent.com/u/152304981?v=4" width="100px" height="100px"/>
+         <Box className="mt-5">
+         {/* <img id="admin" className="mx-auto" src="client\public\logo.jpg" width="100px" height="100px" alt='logo' style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }} /> */}
 </Box>   
- <Box class="mt-4">
+ <Box className="mt-4">
    <h1 className="text-2xl text-center text-white font-bold">Emmanuel Kimwaki</h1>
    <h5 className="text-center text-green-600">Chief Architect</h5>
 </Box>  
@@ -72,7 +69,7 @@ function SideBar({ThemeStyles}) {
     )}
   
 </Menu>
-<Menu class="bg-sky-950">
+<Menu className="bg-amber-950">
 <Box paddingLeft={!isCollapsed? undefined: "10%"}>
     
         <Item
@@ -82,36 +79,43 @@ function SideBar({ThemeStyles}) {
          to="/"
       />
     
-     <h1 className="text-slate-500">Data</h1>
+     <h1 className="text-slate-500">Users</h1>
       <Box>
       <Item
         icon={<GroupIcon/>}
-        title="Manage Team"
-        to="/Team"
+        title="Staff"
+        to="/admin"
       />
 </Box>
 <Box> 
 <Item
         icon={<ContactPage/>}
-        title="Contact Information"
-        to="/Contacts"
+        title="Clients"
+        to="/clients"
       />
       </Box>
      <Box>
         <Item
         icon={<ReceiptIcon/>}
-        title="Materials"
+        title="Partners"
         to="/Item"
       />
      </Box>
     
       
-      <h1 className="text-slate-500">Pages</h1>
+      <h1 className="text-slate-500">Items</h1>
       <Box>
         <Item
         icon={<AccountBoxIcon/>}
-        title="Profile Form"
+        title="Tasks"
         to="/Profile"
+      />
+     </Box>
+     <Box>
+        <Item
+        icon={<AccountBoxIcon/>}
+        title="Tickets"
+        to="/Item"
       />
      </Box>
      <Box>
@@ -121,13 +125,13 @@ function SideBar({ThemeStyles}) {
         to="/Calendar"
       />
      </Box>
-     <Box>
+     {/* <Box>
         <Item
         icon={<QuizOutlinedIcon/>}
         title="FAQ"
         to="/FAQ"
       />
-     </Box>
+     </Box> */}
      <h1 className="text-slate-500">Charts</h1>
      <Box>
         <Item

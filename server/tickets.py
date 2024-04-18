@@ -24,6 +24,7 @@ class Tickets(db.Model):
     deadline = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     assign_to = db.Column(db.Integer, db.ForeignKey('admin.id'))
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))
+    comments = db.Column(db.String, nullable=False)
     tasks = db.relationship('Task', back_populates='ticket')
     client = db.relationship("Client", back_populates="tickets")
     # tickets = db.relationship("Tickets", back_populates="admin")

@@ -10,40 +10,30 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import { Link } from 'react-router-dom';
 function TopNav({toggleColor,darkTheme}) {
   const ThemeStyles={
-    backgroundColor:darkTheme?"rgb(10,10,30)":"rgb(240,250,250)",
-    color:darkTheme?"rgb(240,240,240)":"rgb(10,10,30)"
+    backgroundColor:darkTheme?"bg-gray-950":"bg-teal-950",
+    color:darkTheme?"rgb(240,240,240)":"bg-gray-950"
   }
 
 return (
-    <Box  class="flex justify-between mt-2 p-5" style={ThemeStyles} >
+    <Box  className="flex justify-between mt-2 p-5" style={ThemeStyles} >
     {/*searchbar*/}
-    <Box class="flex">
-      <input className="text-slate-700 bg-sky-950 " placeholder="search"/>
-      <IconButton style={ThemeStyles} class="text-slate-700">
-        <SearchOutlinedIcon />
+    <Box className="flex">
+      {/* <input className="text-slate-700 bg-sky-950 " placeholder="search"/> */}
+      <IconButton style={ThemeStyles} className="text-slate-700">
+        
       </IconButton>
       
     </Box>
     {/*icons*/}
     <Box display="flex p-2">
-      <IconButton style={ThemeStyles} class="text-xl"  onClick={toggleColor}>
+      <IconButton style={ThemeStyles} className="text-xl"  onClick={toggleColor}>
        {darkTheme?<DarkModeOutlinedIcon/>:<LightModeOutlinedIcon />}
       </IconButton>
-      <Link to="/FAQ">
-         <IconButton class='p-2' style={ThemeStyles}>
-        <NotificationsOutlinedIcon />
-      </IconButton>
-      </Link>
-     <Link>
-      <IconButton class="text-slate-800" style={ThemeStyles}>
-        <SettingsOutlinedIcon />
-      </IconButton>
-</Link>
+      
      
       <Link to="/Profile">
-        <IconButton class="text-neutral-800" style={ThemeStyles}>
+        <IconButton className="text-neutral-800" style={ThemeStyles}>
         <Person2OutlinedIcon />
-
       </IconButton>
       </Link>
       

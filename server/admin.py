@@ -2,7 +2,7 @@ from databaseconfig import db
 from sqlalchemy.orm import validates
 
 class Admin(db.Model):
-    __tablename__ = 'admin'
+    _tablename_ = 'admin'
     
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50), nullable=False)
@@ -10,6 +10,8 @@ class Admin(db.Model):
     user_name = db.Column(db.String(100), unique=True, nullable=False)
     position = db.Column(db.Integer)
     phone_number = db.Column(db.String)
+    address = db.Column(db.String)
+    availability = db.Column(db.String)
     email = db.Column(db.String(120), unique=True, nullable=False)
        
     
@@ -38,5 +40,5 @@ class Admin(db.Model):
         
         return email
     
-    def __repr__(self):
+    def _repr_(self):
             return f"Admin('{self.first_name}', '{self.last_name}', '{self.user_name}', '{self.position}', '{self.phone_number}', '{self.email}')"

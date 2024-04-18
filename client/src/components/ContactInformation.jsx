@@ -4,7 +4,7 @@ function ContactInformation({ThemeStyles}){
     const [contactItems, setContactItems] = useState([])
 
     useEffect(() => {
-        (fetch("https://api.npoint.io/50119392bff49c1a1767/contacts"))
+        (fetch("http://localhost:5000/clients"))
         .then(res => res.json())
         .then(contactItems => setContactItems(contactItems))
     }, [])
@@ -19,9 +19,7 @@ function ContactInformation({ThemeStyles}){
       <th className="py-3  border-gray-500 px-6 text-left">Name</th>
       <th className="py-3  border-gray-500 px-6 text-left">Email</th>
       <th className="py-3  border-gray-500 px-6 text-left">Contact No.</th>
-      <th className="py-3  border-gray-500 px-6 text-left">Address 1</th>
-      <th className="py-3   border-gray-500 px-6 text-left">Address 2</th>
-      <th className="py-3   border-gray-500 px-6 text-left">Position</th>
+      <th className="py-3  border-gray-500 px-6 text-left">Address </th>
       
     </tr>
   </thead>
@@ -30,12 +28,10 @@ function ContactInformation({ThemeStyles}){
         return(
       <tr key={contactItem.id} className='border-2 border-gray-800'>
         <td className="py-2 px-6 border-gray-500">{contactItem.id}</td>
-        <td className="py-2 px-6 text-emerald-500 border-gray-500">{contactItem.firstName} {contactItem.lastName}</td>
+        <td className="py-2 px-6 text-emerald-500 border-gray-500">{contactItem.name}</td>
         <td className="py-2 px-6 border-gray-500">{contactItem.email}</td>
-        <td className="py-2 px-6 border-gray-500">{contactItem.contact}</td>
-        <td className="py-2 px-6 text-emerald-500 border-gray-500">{contactItem.address1}</td>
-        <td className="py-2 px-6 border-gray-500">{contactItem.address2}</td>
-        <td className="py-2 px-6 border-gray-500">{contactItem.position}</td>
+        <td className="py-2 px-6 border-gray-500">{contactItem.phone_number}</td>
+        <td className="py-2 px-6 text-emerald-500 border-gray-500">{contactItem.address}</td>
       </tr>
     )})}
   </tbody>

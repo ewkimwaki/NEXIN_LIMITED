@@ -83,9 +83,9 @@ def index():
 app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
 app.add_url_rule('/logout', 'logout', logout, methods=['GET', 'POST'])
 app.add_url_rule('/check_login', 'check_login', check_login, methods=['GET', 'POST'])
-app.add_url_rule('/admin', 'admin', login_required(admin), methods=['GET', 'POST'])
-app.add_url_rule('/clients', 'clients', login_required(clients), methods=['GET', 'POST'])
-app.add_url_rule('/tickets', 'tickets', login_required(tickets), methods=['GET', 'POST'])
+app.add_url_rule('/admin', 'admin', admin, methods=['GET', 'POST'])
+app.add_url_rule('/clients', 'clients', clients, methods=['GET', 'POST'])
+app.add_url_rule('/tickets', 'tickets', tickets, methods=['GET', 'POST'])
 
 
 if __name__ == '__main__':

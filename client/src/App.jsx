@@ -17,10 +17,15 @@ function App () {
   const toggleColor=UpdateTheme() //button hook
   //create the themes
   const ThemeStyles={
-    backgroundColor:darkTheme?"rgb(10,10,30)":"rgb(240,250,250)",
-    color:darkTheme?"rgb(230,220,220)":"rgb(10,10,30)",
-    
+    backgroundColor:darkTheme?"#0c0a09":"rgb(240,250,250)",
+    color:darkTheme?"rgb(240,240,240)":"rgb(10,10,30)",
   }
+  
+  
+  
+  
+  
+  
   return (
 
     <div className="app overflow-hidden" style={ThemeStyles}>

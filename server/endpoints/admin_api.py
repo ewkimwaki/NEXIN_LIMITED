@@ -15,6 +15,8 @@ def admin():
                 'user_name': admin.user_name,
                 'position': admin.position,
                 'phone_number': admin.phone_number,
+                'address': admin.address,
+                'availability': admin.availability,
                 'email': admin.email
             })
         return jsonify(admin_list)
@@ -27,8 +29,10 @@ def admin():
         user_name=data.get('user_name'),
         position=data.get('position'),
         phone_number=data.get('phone_number'),
+        address=data.get('address'),
+        availability=data.get('availability'),
         email=data.get('email')
-        admin = Admin(first_name=first_name, last_name=last_name, user_name=user_name, position=position, phone_number=phone_number, email=email)
+        admin = Admin(first_name=first_name, last_name=last_name, user_name=user_name, position=position, phone_number=phone_number, address=address, availability=availability, email=email)
         db.session.add(admin)
         db.session.commit()
         inserted_admin = {
@@ -38,6 +42,8 @@ def admin():
             'user_name': admin.user_name,
             'position': admin.position,
             'phone_number': admin.phone_number,
+            'address': admin.address,
+            'availability': admin.availability,
             'email': admin.email
         }
         return jsonify(inserted_admin), 201
@@ -51,4 +57,3 @@ def admin():
             return f"Client with ID {admin_id} deleted"
         else:
             return f"Client with ID {admin_id} not found", 404
-        

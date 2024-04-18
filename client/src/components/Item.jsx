@@ -21,7 +21,7 @@ const Item = ({ThemeStyles}) => {
   
 //fetch
   useEffect(() => {
-    fetch(`https://api.npoint.io/50119392bff49c1a1767/materials`)
+    fetch(`http://localhost:5000/tickets`)
       .then(response => response.json())
       .then(data => {
         setMaterials(data);
@@ -59,27 +59,34 @@ const Item = ({ThemeStyles}) => {
 
   return (
     <div style={ThemeStyles} className="container mx-auto px-4 py-6">
-     <h1 className="text-3xl font-semibold mb-4">Construction Items</h1>
+     <h1 className="text-3xl font-semibold mb-4">Tickets</h1>
       <div className='text-center mx-auto'><SearchBar handleChange={handleSearchChange} value={input}/></div>
       <table style={ThemeStyles} className="w-full border-collapse border-gray-500 h-3/4">
         <thead>
           <tr className="bg-sky-950 border-gray-500">
            
-            <th className="py-2 text-slate-200 px-4 border border-gray-500">Material</th>
-            <th className="py-2 text-slate-200 px-4 border border-gray-500">Price</th>
-            <th className="py-2 text-slate-200 px-4 border border-gray-500">Stock In</th>
-            <th className="py-2 text-slate-200 px-4 border border-gray-500">Quantity</th>
-            <th className="py-2 text-slate-200 px-4 border border-gray-500">Stock Out</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Ticket ID</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Client ID</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Assign to</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Priority</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Status</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Deadline</th>
+            <th className="py-2 text-slate-200 px-4 border border-gray-500">Comments</th>
           </tr>
         </thead>
         <tbody>
           {FilteredItems.map((item, index) => (
-            <tr key={index} className="hover:bg-gray-50">
-              <td className="py-2 px-4 border border-gray-500">{item.material}</td>
-              <td className="py-2 px-4 border border-gray-500">{item.price}</td>
-              <td className="py-2 px-4 border border-gray-500">{item.stock_in}</td>
-              <td className="py-2 px-4 border border-gray-500">{item.quantity}</td>
-              <td className="py-2 px-4 border border-gray-500">{item.stock_out}</td>
+            <tr key={index} className="hover:bg-cyan-400">
+              <td className="py-2 px-4 border border-gray-500">{item.id}</td>
+              <td className="py-2 px-4 border border-gray-500">{item.client_id}</td>
+              <td className="py-2 px-4 border border-gray-500">
+              {item.assign_to}
+              <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">Assign</button>
+              </td>
+              <td className="py-2 px-4 border border-gray-500">{item.priority}</td>
+              <td className="py-2 px-4 border border-gray-500">{item.status}</td>
+              <td className="py-2 px-4 border border-gray-500">{item.deadline}</td>
+              <td className="py-2 px-4 border border-gray-500">{item.comments}</td>
             </tr>
           ))}
         </tbody>

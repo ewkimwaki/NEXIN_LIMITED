@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 3756b1b29381
+Revision ID: e10c80da8892
 Revises: 
-Create Date: 2024-04-18 01:35:46.651115
+Create Date: 2024-04-19 00:53:52.710323
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '3756b1b29381'
+revision = 'e10c80da8892'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,6 +25,8 @@ def upgrade():
     sa.Column('user_name', sa.String(length=100), nullable=False),
     sa.Column('position', sa.Integer(), nullable=True),
     sa.Column('phone_number', sa.String(), nullable=True),
+    sa.Column('address', sa.String(), nullable=True),
+    sa.Column('availability', sa.String(), nullable=True),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
@@ -35,6 +37,7 @@ def upgrade():
     sa.Column('name', sa.String(length=80), nullable=False),
     sa.Column('email', sa.String(length=120), nullable=False),
     sa.Column('phone_number', sa.String(), nullable=False),
+    sa.Column('address', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email'),
     sa.UniqueConstraint('name'),
@@ -47,6 +50,7 @@ def upgrade():
     sa.Column('deadline', sa.DateTime(), nullable=False),
     sa.Column('assign_to', sa.Integer(), nullable=True),
     sa.Column('client_id', sa.Integer(), nullable=True),
+    sa.Column('comments', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['assign_to'], ['admin.id'], name=op.f('fk_tickets_assign_to_admin')),
     sa.ForeignKeyConstraint(['client_id'], ['clients.id'], name=op.f('fk_tickets_client_id_clients')),
     sa.PrimaryKeyConstraint('id')

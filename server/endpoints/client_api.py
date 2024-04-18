@@ -11,7 +11,8 @@ def clients():
                 'id': client.id,
                 'name': client.name,
                 'email': client.email,
-                'phone_number': client.phone_number
+                'phone_number': client.phone_number,
+                'address': client.address
             })
         return jsonify(client_list)
     elif request.method == 'POST':
@@ -19,14 +20,16 @@ def clients():
         name = data.get('name')
         email = data.get('email')
         phone_number = data.get('phone_number')
-        client = Client(name = name,email=email,phone_number=phone_number)
+        address = data.get('address')
+        client = Client(name = name,email=email,phone_number=phone_number, address=address)
         db.session.add(client)
         db.session.commit()
         inserted_client = {
             'id': client.id,
             'name': client.name,
             'email': client.email,
-            'phone_number': client.phone_number
+            'phone_number': client.phone_number,
+            'address': client.address
         }
         return jsonify(inserted_client)
     elif request.method == 'DELETE':
