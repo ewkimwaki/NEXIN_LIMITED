@@ -32,6 +32,7 @@ const TicketList = ({ ThemeStyles }) => {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         setTickets(data);
       })
       .catch((error) => {
@@ -113,7 +114,6 @@ const TicketList = ({ ThemeStyles }) => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         const usernames = data.map((admin) => admin.user_name);
         setAdminOptions(usernames);
       })
@@ -123,7 +123,7 @@ const TicketList = ({ ThemeStyles }) => {
   };
 
   const handleAssignTo = (ticketId, adminName) => {
-    fetch(`http://127.0.0.1:5000/tickets/${ticketId}`, {
+    fetch(`http://127.0.0.1:5000/tickets?id=${ticketId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -145,16 +145,18 @@ const TicketList = ({ ThemeStyles }) => {
   };
 
   const handleDeleteTicket = (ticketId) => {
-    fetch(`http://127.0.0.1:5000/tickets/${ticketId}`, {
+    fetch(`http://127.0.0.1:5000/tickets?id=${ticketId}`, {
       method: "DELETE",
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to delete ticket");
         }
-        console.log(`Ticket ${ticketId} deleted successfully`);
-        // Update tickets state by filtering out the deleted ticket
-        setTickets(tickets.filter((ticket) => ticket.id !== ticketId));
+        console.log("Ticket deleted successfully");
+        // Remove the deleted ticket from the frontend display
+        setTickets((prevTickets) =>
+          prevTickets.filter((ticket) => ticket.id !== ticketId)
+        );
       })
       .catch((error) => {
         console.error("Error deleting ticket:", error);
@@ -162,8 +164,8 @@ const TicketList = ({ ThemeStyles }) => {
   };
 
   const toggleTicketStatus = (ticketId, status) => {
-    const newStatus = status === "open" ? "closed" : "open";
-    fetch(`http://127.0.0.1:5000/tickets/${ticketId}`, {
+    const newStatus = status === "Open" ? "Closed" : "Open";
+    fetch(`http://127.0.0.1:5000/tickets?id=${ticketId}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -232,36 +234,34 @@ const TicketList = ({ ThemeStyles }) => {
                 {ticket.id}
               </td>
               <td className="font-small py-2 px-4 border border-orange-500">
-                {ticket.clientId}
+                {ticket.client_id}
               </td>
+
               <td className="font-small py-2 px-4 border border-orange-500">
-                <select
-                  value={ticket.assignTo}
-                  onChange={(e) => handleAssignTo(ticket.id, e.target.value)}
-                  name="assignTo"
-                  className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-                >
-                  <option value="">Select Admin</option>
-                  {adminOptions.map((username) => (
-                    <option key={username} value={username}>
-                      {username}
-                    </option>
-                  ))}
-                </select>
+                {ticket.assign_to ? (
+                  ticket.assign_to
+                ) : (
+                  <select
+                    value={ticket.assignTo}
+                    onChange={(e) => handleAssignTo(ticket.id, e.target.value)}
+                    name="assignTo"
+                    className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
+                  >
+                    <option value="">Select Admin</option>
+                    {adminOptions.map((username) => (
+                      <option key={username} value={username}>
+                        {username}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </td>
+
               <td className="font-small py-2 px-4 border border-orange-500">
                 {ticket.priority}
               </td>
               <td className="font-small py-2 px-4 border border-orange-500">
-                <select
-                  value={ticket.status}
-                  onChange={() => toggleTicketStatus(ticket.id, ticket.status)}
-                  name="status"
-                  className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-                >
-                  <option value="open">Open</option>
-                  <option value="closed">Closed</option>
-                </select>
+              {ticket.status}
               </td>
               <td className="font-small py-2 px-4 border border-orange-500">
                 {ticket.deadline}
@@ -272,82 +272,24 @@ const TicketList = ({ ThemeStyles }) => {
               <td className="font-small py-2 px-4 border border-orange-500">
                 <button
                   type="button"
-                  className="bg-blue-500 text-white px-4 font-small py-2 rounded"
+                  className="bg-red-500 m-2 text-white px-4 font-small py-2 rounded"
                   onClick={() => handleDeleteTicket(ticket.id)}
                 >
                   Delete
+                </button>
+
+                <button
+                  type="button"
+                  className="bg-green-500 m-2 text-white px-4 font-small py-2 rounded"
+                  onClick={() => toggleTicketStatus(ticket.id, ticket.status)}
+                >
+                  {ticket.status=='Open' ?'Close' :'Open'}
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      {/* Form to add new ticket */}
-      <form onSubmit={handleSubmit} style={ThemeStyles} className="mt-4 flex">
-        {/* Input fields for ticket properties */}
-        <input
-          type="text"
-          name="ticketId"
-          placeholder="Ticket ID"
-          value={newTicket.ticketId}
-          onChange={handleInputChange}
-          className="px-4 font-small py-2 bg-slate-200 text-black border border-orange-200 rounded mr-2"
-        />
-        <input
-          type="text"
-          name="clientId"
-          placeholder="Client ID"
-          value={newTicket.clientId}
-          onChange={handleInputChange}
-          className="px-4 font-small py-2 border bg-slate-200 text-black border-orange-200 rounded mr-2"
-        />
-        <select
-          name="assignTo"
-          value={newTicket.assignTo}
-          onChange={handleInputChange}
-          className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-        >
-          <option value="">Select Admin</option>
-          {adminOptions.map((admin) => (
-            <option key={admin} value={admin}>
-              {admin}
-            </option>
-          ))}
-        </select>
-        <input
-          type="text"
-          name="priority"
-          placeholder="Priority"
-          value={newTicket.priority}
-          onChange={handleInputChange}
-          className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-        />
-        {/* Remove status input field */}
-        <input
-          type="datetime-local"
-          name="deadline"
-          placeholder="Deadline"
-          value={newTicket.deadline}
-          onChange={handleInputChange}
-          className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-        />
-        <input
-          type="text"
-          name="comments"
-          placeholder="Comments"
-          value={newTicket.comments}
-          onChange={handleInputChange}
-          className="px-4 bg-slate-200 font-small py-2 text-black border border-orange-200 rounded mr-2"
-        />
-        {/* Button to submit the form */}
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 font-small py-2 rounded"
-        >
-          Add Ticket
-        </button>
-      </form>
     </div>
   );
 };

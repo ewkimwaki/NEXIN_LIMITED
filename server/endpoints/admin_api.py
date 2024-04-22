@@ -59,3 +59,15 @@ def admin():
             return f"Client with ID {admin_id} deleted"
         else:
             return f"Client with ID {admin_id} not found", 404
+        
+    elif request.method == 'PATCH':
+        admin_id = request.args.get('id')
+        admin = Admin.query.get(admin_id)
+        if not admin:
+            return jsonify({'message': 'Admin not found'}), 404
+        data = request.get_json()
+        if 'availability' in data:
+            admin.availability = data['availability']
+        db.session.commit()
+        return jsonify({'message': 'Availability updated successfully'}), 200
+    

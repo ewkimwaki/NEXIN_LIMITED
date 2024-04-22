@@ -16,13 +16,22 @@ function TeamTable() {
         );
         setTableItems(updatedItems);
 
-        fetch(`http://localhost:5000/admin/${id}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ availability: newAvailability })
+        fetch(`http://127.0.0.1:5000/admin?id=${id}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            availability: newAvailability,
+          }),
         })
+        // fetch(`http://localhost:5000/admin/${id}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ availability: newAvailability })
+        // })
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);

@@ -3,24 +3,12 @@ from datetime import datetime
 from enum import Enum
 from databaseconfig import db
 
-
-class TicketStatus(Enum):
-    OPEN = "open"
-    CLOSED = "closed"
-    IN_PROGRESS = "in_progress"
-
-class PriorityLevel(Enum):
-    URGENT = "urgent"
-    HIGH = "high"
-    MEDIUM = "medium"
-    LOW = "low"
-
 class Tickets(db.Model):
     _tablename_ = 'tickets'
 
     id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.Enum(TicketStatus), default=TicketStatus.OPEN)
-    priority = db.Column(db.Enum(PriorityLevel), default=PriorityLevel.LOW)
+    status = db.Column(db.String)
+    priority = db.Column(db.String)
     deadline = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     assign_to = db.Column(db.Integer, db.ForeignKey('admin.id'))
     client_id = db.Column(db.Integer, db.ForeignKey('clients.id'))

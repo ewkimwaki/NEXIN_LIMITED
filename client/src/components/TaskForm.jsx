@@ -29,26 +29,13 @@ function TaskForm({ switchForm, ThemeStyles }) {
         }
     })();
     
-
-      // fetch("http://127.0.0.1:5000/task", {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json"
-      //   },
-      //   body: JSON.stringify(values)
-      // })
-      // .then(res => res.json())
-      // .then(data => {
-      //   console.log(data);
-      //   setSubmitting(false);
-      // });
     },
   });
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '65vh' }}>
       <form onSubmit={formik.handleSubmit} className="m-5" style={{ ...ThemeStyles, width: '80%' }}>
-        <h2 className="pb-12 text-2xl font-medium py-2 border-white-500 px-4 text-slate-200 leading-30">Registration Form</h2>
+        <h2 className="pb-12 text-2xl font-medium py-2 border-white-500 px-4 text-slate-200 leading-30">Task Entry Form</h2>
         <div className="grid gap-8">
           {["Subject", "Description", "deadline"].map(field => (
             <div key={field}>

@@ -6,7 +6,7 @@ from databaseconfig import db
 from endpoints.client_api import clients
 from endpoints.tickets_api import tickets
 from endpoints.admin_api import admin
-from endpoints.auth_api import check_login, login, logout
+from endpoints.auth_api import login, logout
 
 
 app = Flask(__name__)
@@ -50,36 +50,6 @@ def login_required(f):
 def home():
     return 'Hello World!'
 
-@app.route('/api/login', methods=['POST'])
-def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-
-    if not username or not password:
-        return make_response(jsonify({'message': 'Username or password missing'}), 400)
-
-    user = users.get(username)
-    if not user or user['password'] != password:
-        return make_response(jsonify({'message': 'Invalid credentials'}), 401)
-
-    response = make_response(jsonify({'message': 'Logged in successfully'}), 200)
-    response.set_cookie('username', username)  # Set cookie
-    return response
-
-@app.route('/api/check_login')
-def check_login():
-    username = request.cookies.get('username')
-    if username:
-        return jsonify({'logged_in': True, 'username': username})
-    else:
-        return jsonify({'logged_in': False}), 401
-
-@app.route('/api/logout', methods=['POST'])
-def logout():
-    response = make_response(jsonify({'message': 'Logged out successfully'}), 200)
-    response.set_cookie('username', '', expires=0)  # Delete cookie
-    return response
 
 @app.route('/api/protected')
 @login_required
@@ -91,10 +61,10 @@ def index():
 
 app.add_url_rule('/login', 'login', login, methods=['GET', 'POST'])
 app.add_url_rule('/logout', 'logout', logout, methods=['GET', 'POST'])
-app.add_url_rule('/check_login', 'check_login', check_login, methods=['GET', 'POST'])
-app.add_url_rule('/admin', 'admin', admin, methods=['GET', 'POST'])
-app.add_url_rule('/clients', 'clients', clients, methods=['GET', 'POST'])
-app.add_url_rule('/tickets', 'tickets', tickets, methods=['GET', 'POST'])
+# app.add_url_rule('/check_login', 'check_login', check_login, methods=['GET', 'POST'])
+app.add_url_rule('/admin', 'admin', admin, methods=['GET', 'POST', 'PATCH', 'DELETE'])
+app.add_url_rule('/clients', 'clients', clients, methods=['GET', 'POST', 'PATCH', 'DELETE'])
+app.add_url_rule('/tickets', 'tickets', tickets, methods=['GET', 'POST', 'DELETE', 'PATCH'])
 
 
 if __name__ == '__main__':

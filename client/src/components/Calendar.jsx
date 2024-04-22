@@ -25,7 +25,7 @@ const events = [
 const MyCalendar = () => {
   return (
     <div style={{ height: '500px' }}>
-        <h1 className='text-2xl font-semibold'> PETWILL CONSTRUCTION CALENDAR</h1>
+        <h1 className='text-2xl font-semibold'> NEXIN LTD TICKETING SYSTEM</h1>
       <Calendar
         localizer={localizer}
         events={events}

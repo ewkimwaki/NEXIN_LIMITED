@@ -2,7 +2,7 @@ from datetime import datetime
 from databaseconfig import db
 from client import Client
 from admin import Admin
-from tickets import PriorityLevel, TicketStatus, Tickets
+from tickets import Tickets
 from tasks import Task
 from app import app
 
@@ -22,15 +22,15 @@ with app.app_context():
     client4 = Client(name='Sang Wicklife', email='sang@example.com', phone_number='0987653321', address='P.O. 345 Kliffen street')
     
     # Create tasks
-    task1 = Task(title='Task 1', description='Description for Task 1')
-    task2 = Task(title='Task 2', description='Description for Task 2')
+    # task1 = Task(title='Task 1', description='Description for Task 1')
+    # task2 = Task(title='Task 2', description='Description for Task 2')
     
-    # Create tickets
-    ticket1 = Tickets(status=TicketStatus.OPEN, priority=PriorityLevel.LOW, deadline=datetime.utcnow(), assign_to='None', client_id='1', comments='Very urgent')
-    ticket2 = Tickets(status=TicketStatus.OPEN, priority=PriorityLevel.URGENT, deadline=datetime.utcnow(), assign_to='None', client_id='2', comments='Waiting for approval')
+    # # Create tickets
+    # ticket1 = Tickets(status='Open', priority='low', deadline=datetime.utcnow(), assign_to='None', client_id='1', comments='Very urgent')
+    # ticket2 = Tickets(status='Open', priority='low', deadline=datetime.utcnow(), assign_to='None', client_id='2', comments='Waiting for approval')
 
     # Add clients and tasks to the session
-    db.session.add_all([admin1, admin2, client1, client2, client3, client4, task1, task2, ticket1, ticket2])
+    db.session.add_all([admin1, admin2, client1, client2, client3, client4])
 
     # Commit the session to the database
     db.session.commit()
