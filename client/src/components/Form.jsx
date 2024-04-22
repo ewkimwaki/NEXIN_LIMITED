@@ -1,201 +1,161 @@
-import { useState } from "react";
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
-var registerPage = false
-function Login({switchForm, ThemeStyles}){
+let isLoggedIn = false;
 
-  const[formData, setFormData] = useState({
-    email: "",
-    password: ""
-})
+function Login({ switchForm, ThemeStyles }) {
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email('Invalid email address').required('Required'),
+      password: Yup.string().min(8, 'Must be at least 8 characters').required('Required')
+    }),
+    onSubmit: (values, { setSubmitting }) => {
+      console.log(values);
+      isLoggedIn = true;
 
-function handleChange(event){
-    const name = event.target.name
-    const value = event.target.value
-    setFormData({
-        ...formData,
-        [name]: [value]
-    })
-}
+      fetch("http://localhost:5000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setSubmitting(false);
+      });
+    },
+  });
 
-// function addUser(newProfile){
-//   const updatedProfile = [...formData, newProfile]
-//   setFormData(updatedProfile)
-// }
-
-function handleSubmit(event){
-    event.preventDefault()
-    const profile = {
-        email: email.value,
-        password: password.value
-    }
-    console.log(profile)
-
-    fetch("http://127.0.0.1:3000/user", {
-      method: "GET",
-      headers:{
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(profile)
-    }).then(res => res.json())
-    .then(data => console.log(data))
-}
-
-    return(
-        <form onSubmit={handleSubmit} className="m-3" style={ThemeStyles}>
-  <div className="space-y-12">
-
-
-    <div className="border-b border-gray-900/10 pb-12">
-      <h2 className="text-2xl  font-bold leading-30">Login Form</h2>
-
-      <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
-
-        <div className="sm:col-span-4">
-          <label htmlFor="email" className="block text-sm font-medium leading-6">Email address  <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required className="block w-full rounded-md bg-slate-300 border-0 py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '65vh' }}>
+      <form onSubmit={formik.handleSubmit} className="m-3" style={ThemeStyles}>
+        <div className="space-y-12">
+          <div className="border-b border-white-950 pb-12">
+            <h2 className="text-3xl font-medium py-2 border-white-900 px-4 text-slate-200 leading-30">Login Form</h2>
+            <div className="mt-12 grid grid-cols-0 gap-x-6 gap-y-8 xl:grid-cols-7">
+              <div className="xl:col-span-4">
+                <label htmlFor="email" className="block text-xl font-medium leading-6">Email address <span className="text-green-600">(required)</span></label>
+                <input id="email" name="email" type="email"
+                  className="mt-1 block w-full px-3 py-2 bg-teal-750 border border-gray-300 rounded-md shadow-xl focus:outline-none focus:ring-orange-900 focus:border-orange-900"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                />
+                {formik.touched.email && formik.errors.email ? <div className="text-red-500">{formik.errors.email}</div> : null}
+              </div>
+              <div className="xl:col-span-4">
+                <label htmlFor="password" className="block text-xl font-medium leading-6">Password <span className="text-green-500">(required)</span></label>
+                <input id="password" name="password" type="password"
+                  className="mt-1 block w-full px-3 py-2 bg-teal-750 border border-gray-300 rounded-md shadow-xl focus:outline-none focus:ring-orange-900 focus:border-orange-900"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                {formik.touched.password && formik.errors.password ? <div className="text-red-500">{formik.errors.password}</div> : null}
+              </div>
+            </div>
           </div>
         </div>
-        <div className="sm:col-span-4">
-          <label htmlFor="password" className="block text-sm font-medium leading-6">Password <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input id="password" name="password" type="password" value={formData.password} onChange={handleChange} required className="block w-full rounded-md bg-slate-300 border-0 py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
-          </div>
+        <div className="mt-6 flex items-center justify-end gap-x-6">
+          <button type="submit" className="rounded-md bg-green-600 px-3 py-2 text-xl font-semibold text-white shadow-xl hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">Login</button>
+          <p className="register cursor-pointer" style={{ cursor: 'pointer' }} onClick={switchForm}>Register</p>
         </div>
-        
-      </div>
+      </form>
     </div>
-
-  </div>
-
-  <div className="mt-6 flex items-center justify-end gap-x-6">
-    <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Login</button>
-    <p className="register" onClick={switchForm}>Register</p>
-  </div>
-</form>
-    )
+  );
 }
 
+function Register({ switchForm, ThemeStyles }) {
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      contactNumber: '',
+      address: '',
+      password: '',
+      postalCode: ''
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required('Required'),
+      lastName: Yup.string().required('Required'),
+      email: Yup.string().email('Invalid email address').required('Required'),
+      contactNumber: Yup.string().matches(/^[0-9]+$/, "Must be only digits").min(10, 'Must be exactly 10 digits').max(10, 'Must be exactly 10 digits').required('Required'),
+      address: Yup.string().required('Required'),
+      password: Yup.string().required('Required'),
+      postalCode: Yup.string().required('Required')
+    }),
+    onSubmit: (values, { setSubmitting }) => {
+      // console.log(values);
+
+      
 
 
+    //   (async () => {
+    //     try {
+    //       console.log(values);
+    //       const response = await axios.post('http://localhost:5000/admin', values);
+    //       console.log(response.data.message);
 
-function Register({switchForm,ThemeStyles}){
+    //     } catch (error) {
+    //         console.log(error.response.data.message);
+    //     }
+    // })();
+    
 
-  const[formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    contactNumber: "",
-    address1: "",
-    address2: "",
-    position: "",
-    postalCode: ""
-})
+      fetch("http://127.0.0.1:5000/admin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(values)
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        setSubmitting(false);
+      });
+    },
+  });
 
-function handleChange(event){
-    const name = event.target.name
-    const value = event.target.value
-    setFormData({
-        ...formData,
-        [name]: [value]
-    })
-}
-
-// function addUser(newProfile){
-//   const updatedProfile = [...formData, newProfile]
-//   setFormData(updatedProfile)
-// }
-
-function handleSubmit(event){
-    event.preventDefault()
-    const profile = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        email: email.value,
-        contact: contactNumber.value,
-        address1: address1.value,
-        address2: address2.value,
-        position: position.value,
-        postalCode: postalCode.value
-    }
-    console.log(profile)
-
-    fetch("http://127.0.0.1:3000/user", {
-      method: "POST",
-      headers:{
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(profile)
-    }).then(res => res.json())
-    .then(data => console.log(data))
-}
-
-    return(
-        <form onSubmit={handleSubmit} className="m-3" style={ThemeStyles}>
-  <div className="space-y-12">
-
-
-    <div className="border-b border-gray-900/10 pb-12">
-      <h2 className="text-2xl  font-bold leading-30">Profile Form</h2>
-      <p className="mt-1 text-base text-green-600 leading-6 ">Create a new staff profile.</p>
-
-      <div className="mt-10 grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-6">
-        <div className="sm:col-span-4">
-          <label htmlFor="first-name" className="block text-sm font-medium leading-6">First name <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input type="text" value={formData.firstName} name="firstName" id="firstName" onChange={handleChange} required className="block w-full bg-slate-300 rounded-md border-0 
-            py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
-          </div>
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '65vh' }}>
+      <form onSubmit={formik.handleSubmit} className="m-3" style={ThemeStyles}>
+        <h2 className="pb-12 text-2xl font-medium py-2 border-white-500 px-4 text-slate-200 leading-30">Registration Form</h2>
+        <div className="grid grid-cols-2 gap-8">
+          {["firstName", "lastName", "email", "contactNumber", "address", "password", "postalCode"].map(field => (
+            <div key={field}>
+              <label htmlFor={field} className="block text-xl font-medium">
+                {field.charAt(0).toUpperCase() + field.slice(1).replace(/([A-Z])/g, ' $1')}<span className="text-green-600">(required)</span>
+              </label>
+              <input
+                id={field}
+                name={field}
+                type={field === "email" ? "email" : field === "contactNumber" ? "tel" : "text"}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values[field]}
+                required
+                className="mt-1 block w-full px-3 py-2 bg-teal-750 border border-gray-300 rounded-md shadow-xl focus:outline-none focus:ring-orange-900 focus:border-orange-900"
+              />
+              {formik.touched[field] && formik.errors[field] ? <div className="text-red-500">{formik.errors[field]}</div> : null}
+            </div>
+          ))}
         </div>
-
-        <div className="sm:col-span-4">
-          <label htmlFor="last-name" className="block text-sm font-medium leading-6">Last name</label>
-          <div className="mt-2">
-            <input type="text" name="lastName" value={formData.lastName} id="lastName" onChange={handleChange} required className="block w-full bg-slate-300 rounded-md border-0 py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
-          </div>
+        <div className="flex justify-end mt-6">
+          <button type="submit" className="rounded-md bg-green-600 px-3 py-2 text-xl font-semibold text-white shadow-xl hover:bg-green-500">Register</button>
+          <p className="ml-4 cursor-pointer" onClick={switchForm}>Login</p>
         </div>
-
-        <div className="sm:col-span-4">
-          <label htmlFor="email" className="block text-sm font-medium leading-6">Email address  <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required className="block w-full rounded-md bg-slate-300 border-0 py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
-          </div>
-        </div>
-
-        
-
-        <div className="col-span-4">
-          <label htmlFor="street-address" className="block text-sm font-medium leading-6">Address 1  <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input type="text" name="address1" value={formData.address1} id="address1" onChange={handleChange} required className="block w-full rounded-md border-0 py-1.5 bg-slate-300 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
-          </div>
-        </div>
-
-        <div className="col-span-4">
-          <label htmlFor="position" className="block text-sm font-medium leading-6">Position  <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input type="text" name="position" value={formData.position} id="position" onChange={handleChange} required className="block w-full rounded-md bg-slate-300 border-0 py-1.5 text-gray-900 shadow-sm   placeholder:text-gray-400 sm:text-sm sm:leading-6"/>
-          </div>
-        </div>
-
-        <div className="sm:col-span-2 sm:col-start-1">
-          <label htmlFor="contact" className="block text-sm font-medium leading-6">Contact Number  <span className="text-slate-400">(required)</span></label>
-          <div className="mt-2">
-            <input type="tel" name="contactNumber" id="contactNumber" value={formData.contactNumber} required onChange={handleChange} className="block w-full bg-slate-300 rounded-md border-0 py-1.5 text-gray-900 shadow-sm  placeholder:text-gray-400  sm:text-sm sm:leading-6"/>
-          </div>
-        </div>
-      </div>
+      </form>
     </div>
-
-
-  </div>
-
-  <div className="mt-6 flex items-center justify-end gap-x-6">
-    <button type="submit" className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create User Profile</button>
-    <p className="register" onClick={switchForm}>Login</p>
-  </div>
-</form>
-    )
+  );
 }
 
 function Form() {
@@ -207,8 +167,6 @@ function Form() {
 
   return (
     <div>
-      <h1 className="text-2xl  font-bold leading-30">Login Form</h1>
-      <p className="mt-1 text-base text-green-600 leading-6 ">Login to your account.</p>
       {isLoginForm ? (
         <Login switchForm={switchForm} />
       ) : (

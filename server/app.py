@@ -10,7 +10,18 @@ from endpoints.auth_api import check_login, login, logout
 
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)  # Enable CORS with credentials support
+CORS(app, origins='*')  # Enable CORS with credentials support
+
+@app.before_request
+def before_request():
+    if request.method == 'OPTIONS':
+        # Handle preflight request
+        response = jsonify({'message': 'Preflight request successful'})
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST')
+        return response
+    
+    
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.json.compact = False
@@ -19,8 +30,6 @@ migrate = Migrate(app, db)
 
 db.init_app(app)
 
-
-CORS(app, supports_credentials=True)  # Enable CORS with credentials support
 
 # Dummy user data
 users = {

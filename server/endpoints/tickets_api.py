@@ -1,3 +1,4 @@
+from datetime import datetime
 from models import Tickets
 from flask import jsonify, request
 from databaseconfig import db
@@ -22,9 +23,9 @@ def tickets():
         status = data.get('status')
         priority = data.get('priority')
         deadline = data.get('deadline')
-        assign_to = data.get('assign_to')
-        client_id = data.get('client_id')
-        ticket = Tickets(status=status, priority=priority, deadline=deadline, assign_to=assign_to, client_id=client_id)
+        assign_to = 'klif'
+        client_id = '1'
+        ticket = Tickets(status=status, priority=priority, deadline=datetime.utcnow(), assign_to=assign_to, client_id=client_id, comments='urgent')
         db.session.add(ticket)
         db.session.commit()
         inserted_ticket = {

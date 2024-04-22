@@ -10,11 +10,12 @@ import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
 import { Link } from 'react-router-dom';
 function TopNav({toggleColor,darkTheme}) {
   const ThemeStyles={
-    backgroundColor:darkTheme?"bg-gray-950":"bg-teal-950",
-    color:darkTheme?"rgb(240,240,240)":"bg-gray-950"
-  }
+    backgroundColor:darkTheme?"rgd(23, 5, 5)":"rgb(84, 35, 13)",
+    color:darkTheme?"rgb(13, 13, 13)":"rgb(255 255 255)",
+  };
+  return (
+    
 
-return (
     <Box  className="flex justify-between mt-2 p-5" style={ThemeStyles} >
     {/*searchbar*/}
     <Box className="flex">
@@ -32,7 +33,7 @@ return (
       
      
       <Link to="/Profile">
-        <IconButton className="text-neutral-800" style={ThemeStyles}>
+        <IconButton className="text-neutral-300" style={ThemeStyles}>
         <Person2OutlinedIcon />
       </IconButton>
       </Link>

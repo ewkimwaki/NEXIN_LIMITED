@@ -13,7 +13,7 @@ def admin():
                 'first_name': admin.first_name,
                 'last_name': admin.last_name,
                 'user_name': admin.user_name,
-                'position': admin.position,
+                'password': admin.password,
                 'phone_number': admin.phone_number,
                 'address': admin.address,
                 'availability': admin.availability,
@@ -22,31 +22,33 @@ def admin():
         return jsonify(admin_list)
     
     elif request.method == 'POST':
-        
         data = request.get_json()
-        first_name=data.get('first_name'),
-        last_name=data.get('last_name'),
-        user_name=data.get('user_name'),
-        position=data.get('position'),
-        phone_number=data.get('phone_number'),
-        address=data.get('address'),
-        availability=data.get('availability'),
-        email=data.get('email')
-        admin = Admin(first_name=first_name, last_name=last_name, user_name=user_name, position=position, phone_number=phone_number, address=address, availability=availability, email=email)
+        print(jsonify(data))
+        first_name = data.get('firstName')
+        last_name = data.get('lastName')
+        user_name = data.get('email')
+        password = data.get('password')
+        phone_number = data.get('contactNumber')
+        address = data.get('address')
+        email = data.get('email')
+        
+        admin = Admin(first_name=first_name, last_name=last_name, user_name=user_name, password=password, phone_number=phone_number, address=address, availability='available', email=email)
+        
+        
         db.session.add(admin)
         db.session.commit()
-        inserted_admin = {
+        return jsonify({
             'id': admin.id,
             'first_name': admin.first_name,
             'last_name': admin.last_name,
             'user_name': admin.user_name,
-            'position': admin.position,
+            'password': admin.password,
             'phone_number': admin.phone_number,
             'address': admin.address,
             'availability': admin.availability,
             'email': admin.email
-        }
-        return jsonify(inserted_admin), 201
+        }), 201
+        # return jsonify(inserted_admin), 201
     
     elif request.method == 'DELETE':
         admin_id = request.args.get('id')

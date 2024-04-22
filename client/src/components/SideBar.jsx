@@ -61,8 +61,8 @@ function SideBar({ThemeStyles}) {
          {/* <img id="admin" className="mx-auto" src="client\public\logo.jpg" width="100px" height="100px" alt='logo' style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }} /> */}
 </Box>   
  <Box className="mt-4">
-   <h1 className="text-2xl text-center text-white font-bold">Emmanuel Kimwaki</h1>
-   <h5 className="text-center text-green-600">Chief Architect</h5>
+   <h1 className="text-2xl text-center text-white font-bold">Nexin Ltd</h1>
+   <h5 className="text-center text-green-600">Ticket System</h5>
 </Box>  
  </Box>
       
@@ -91,14 +91,14 @@ function SideBar({ThemeStyles}) {
 <Item
         icon={<ContactPage/>}
         title="Clients"
-        to="/clients"
+        to="/Contacts"
       />
       </Box>
      <Box>
         <Item
         icon={<ReceiptIcon/>}
-        title="Partners"
-        to="/Item"
+        title="Portfolio"
+        to="/Portfolio"
       />
      </Box>
     
@@ -108,14 +108,14 @@ function SideBar({ThemeStyles}) {
         <Item
         icon={<AccountBoxIcon/>}
         title="Tasks"
-        to="/Profile"
+        to="/TaskForm"
       />
      </Box>
      <Box>
         <Item
         icon={<AccountBoxIcon/>}
         title="Tickets"
-        to="/Item"
+        to="/TicketList"
       />
      </Box>
      <Box>

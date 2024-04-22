@@ -9,4 +9,3 @@ class Task(db.Model):
     ticket_id = db.Column(db.Integer, db.ForeignKey('tickets.id'))  # Foreign key to the Tickets table
     ticket = db.relationship('Tickets', back_populates='tasks')
     
-
