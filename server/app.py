@@ -81,5 +81,5 @@ app.add_url_rule('/clients', 'clients', clients, methods=['GET', 'POST', 'PATCH'
 app.add_url_rule('/tickets', 'tickets', tickets, methods=['GET', 'POST', 'DELETE', 'PATCH'])
 
 
-if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+# if __name__ == '__main__':
+#     app.run(port=5555, debug=True)
